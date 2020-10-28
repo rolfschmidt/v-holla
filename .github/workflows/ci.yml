@@ -49,11 +49,11 @@ jobs:
     steps:
     - name: Install mysql
       run: |
-        brew uninstall openssl@1.0.2t
-        brew uninstall python@2.7.17
-        brew untap local/openssl
-        brew untap local/python2
-        brew cask install xquartz
+        # brew uninstall openssl@1.0.2t
+        # brew uninstall python@2.7.17
+        # brew untap local/openssl
+        # brew untap local/python2
+        # brew cask install xquartz
         brew update
         brew install mysql
         brew services start mysql
@@ -69,11 +69,11 @@ jobs:
         /usr/local/opt/postgres/bin/createdb holla -U postgres
     - name: Install sqlite
       run: |
-        brew uninstall openssl@1.0.2t
-        brew uninstall python@2.7.17
-        brew untap local/openssl
-        brew untap local/python2
-        brew cask install xquartz
+        # brew uninstall openssl@1.0.2t
+        # brew uninstall python@2.7.17
+        # brew untap local/openssl
+        # brew untap local/python2
+        # brew cask install xquartz
         brew update
         brew install sqlite
     - name: Checkout V
