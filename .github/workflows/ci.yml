@@ -66,7 +66,7 @@ jobs:
         /usr/local/opt/postgres/bin/pg_ctl -D /usr/local/var/postgres start
         sleep 3
         /usr/local/opt/postgres/bin/createuser -s postgres
-        sudo -u postgres createdb holla
+        /usr/local/opt/postgres/bin/createdb holla -U postgres
     - name: Install sqlite
       run: |
         brew uninstall openssl@1.0.2t
