@@ -6,14 +6,12 @@ jobs:
   ubuntu:
     runs-on: ubuntu-latest
     steps:
-      - name: Install mysql
-        run: |
-          sudo apt-get update
-          sudo apt-get -y install mysql-server libmysqlclient-dev
-          sudo /etc/init.d/mysql start
-          mysql -e "create database holla; grant all on \`holla%\`.* to 'root'@'localhost';" -uroot -proot
-          echo "MYSQL_DATABASE_URL=mysql://root:root@localhost/holla" >> $GITHUB_ENV
-          echo "MYSQL_EXAMPLE_DATABASE_URL=mysql://root:root@localhost/holla" >> $GITHUB_ENV
+    - name: Install mysql
+      run: |
+        sudo apt-get update
+        sudo apt-get -y install mysql-server libmysqlclient-dev
+        sudo /etc/init.d/mysql start
+        mysql -e "create database holla; grant all on \`holla%\`.* to 'root'@'localhost';" -uroot -proot
     - name: Checkout V
       uses: actions/checkout@v2
       with:
