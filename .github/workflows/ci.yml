@@ -21,6 +21,7 @@ jobs:
     - name: Build tests
       run: |
         cd ./vlib/holla/
+        cat mysql_test.v
         v test mysql_test.v
 
   macos:
