@@ -6,8 +6,8 @@ pub fn mysql_example() bool {
     mut mysql := mysql.Connection{
         host: 'localhost',
         username: 'root'
-        password: ''
-        dbname: 'mysql'
+        password: 'root'
+        dbname: 'holla'
     }
     mysql.connect() or {
         return false
