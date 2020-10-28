@@ -21,8 +21,7 @@ jobs:
     - name: Build tests
       run: |
         cd ./vlib/holla/
-        v up
-        v test .
+        v test mysql_test.v
 
   macos:
     runs-on: macos-latest
@@ -42,8 +41,7 @@ jobs:
     - name: Build tests
       run: |
         cd ./vlib/holla/
-        v up
-        v test .
+        v test mysql_test.v
 
   windows-msvc:
     runs-on: windows-latest
@@ -64,5 +62,4 @@ jobs:
     # otherwise this step and V script won't see V executable.
     - name: Build tests
       run:
-        .\v.exe up
-        .\v.exe test .\vlib\holla\.
+        .\v.exe test .\vlib\holla\mysql_test.v
