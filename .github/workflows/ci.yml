@@ -19,7 +19,7 @@ jobs:
         echo "host    all             all             127.0.0.1/32            md5" > sudo tee -a /etc/postgresql/10/main/pg_hba.conf
         sudo service postgresql restart && sleep 3
         sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'postgres';"
-        sudo -u postgres psql -c "createdb holla"
+        sudo -u postgres createdb holla
         sudo service postgresql restart && sleep 3
     - name: Checkout V
       uses: actions/checkout@v2
