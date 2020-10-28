@@ -24,11 +24,11 @@ jobs:
       run: |
         make
         sudo ./v symlink
+    - name: V Doctor
+      run: |
+        v doctor
     - name: Build tests
       run: |
         cd ./vlib/holla/
         mysql -e "SHOW TABLES" -uroot -proot holla || echo down
         v -cg test mysql_test.v
-    - name: V Doctor
-      run: |
-        v doctor
