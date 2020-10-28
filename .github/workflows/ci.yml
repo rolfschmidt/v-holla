@@ -23,7 +23,7 @@ jobs:
         sudo service postgresql restart && sleep 3
     - name: Install sqlite
       run: |
-        apt-get install --quiet -y libssl-dev sqlite3 libsqlite3-dev
+        sudo apt-get install -y libssl-dev sqlite3 libsqlite3-dev
     - name: Checkout V
       uses: actions/checkout@v2
       with:
