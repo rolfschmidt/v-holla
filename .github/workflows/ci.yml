@@ -21,6 +21,7 @@ jobs:
     - name: Build tests
       run: |
         cd ./vlib/holla/
+        v up
         v test .
 
   macos:
@@ -41,6 +42,7 @@ jobs:
     - name: Build tests
       run: |
         cd ./vlib/holla/
+        v up
         v test .
 
   windows-msvc:
@@ -61,4 +63,6 @@ jobs:
     # Don't move applying V directory to PATH, to other steps
     # otherwise this step and V script won't see V executable.
     - name: Build tests
-      run: .\v.exe test .\vlib\holla\.
+      run:
+        .\v.exe up
+        .\v.exe test .\vlib\holla\.
