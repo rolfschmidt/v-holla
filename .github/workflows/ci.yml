@@ -21,6 +21,9 @@ jobs:
         sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'postgres';"
         sudo -u postgres createdb holla
         sudo service postgresql restart && sleep 3
+    - name: Install sqlite
+      run: |
+        apt-get install --quiet -y libssl-dev sqlite3 libsqlite3-dev
     - name: Checkout V
       uses: actions/checkout@v2
       with:
