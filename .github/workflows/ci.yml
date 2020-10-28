@@ -28,4 +28,4 @@ jobs:
       run: |
         cd ./vlib/holla/
         mysql -e "SHOW TABLES" -uroot -proot holla || echo down
-        v test mysql_test.v
+        v -cg test mysql_test.v
