@@ -13,6 +13,13 @@ jobs:
       with:
         mysql database: 'holla'
         mysql root password: 'root'
+    - uses: harmon758/postgresql-action@v1
+      with:
+        postgresql version: '11'
+        postgresql db: 'holla'
+        postgresql user: 'postgres'
+        postgresql password: 'postgres'
+
 #      run: |
 #        sudo apt-get update
 #        sudo apt-get -y install mysql-server libmysqlclient-dev
