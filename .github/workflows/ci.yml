@@ -9,7 +9,8 @@ jobs:
     - name: Install mysql
       uses: mirromutth/mysql-action@v1.1
       with:
-        mysql database: 'holla' # Optional, default value is "test". The specified database which will be create
+        mysql database: 'holla'
+        mysql root password: 'root'
 #      run: |
 #        sudo apt-get update
 #        sudo apt-get -y install mysql-server libmysqlclient-dev
