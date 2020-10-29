@@ -121,6 +121,8 @@ jobs:
 
   macos:
     runs-on: macos-latest
+    env:
+      VFLAGS: -I/usr/local/opt/mysql-client/include
     steps:
     - name: Install mysql
       run: |
