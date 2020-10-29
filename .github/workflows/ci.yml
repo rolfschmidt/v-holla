@@ -3,10 +3,13 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-#  ubuntu:
-#    runs-on: ubuntu-20.04
-#    steps:
-#    - name: Install mysql
+  ubuntu:
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Install mysql
+      uses: mirromutth/mysql-action@v1.1
+      with:
+        mysql database: 'holla' # Optional, default value is "test". The specified database which will be create
 #      run: |
 #        sudo apt-get update
 #        sudo apt-get -y install mysql-server libmysqlclient-dev
@@ -24,26 +27,26 @@ jobs:
 #    - name: Install sqlite
 #      run: |
 #        sudo apt-get install -y libssl-dev sqlite3 libsqlite3-dev
-#    - name: Checkout V
-#      uses: actions/checkout@v2
-#      with:
-#        repository: vlang/v
-#    - name: Checkout holla
-#      uses: actions/checkout@v2
-#      with:
-#        path: vlib/holla
-#    - name: Build V
-#      run: |
-#        make
-#        sudo ./v symlink
-#    - name: V Doctor
-#      run: |
-#        v doctor
-#    - name: Build tests
-#      run: |
-#        cd ./vlib/holla/
-#        v -cg test .
-#
+    - name: Checkout V
+      uses: actions/checkout@v2
+      with:
+        repository: vlang/v
+    - name: Checkout holla
+      uses: actions/checkout@v2
+      with:
+        path: vlib/holla
+    - name: Build V
+      run: |
+        make
+        sudo ./v symlink
+    - name: V Doctor
+      run: |
+        v doctor
+    - name: Build tests
+      run: |
+        cd ./vlib/holla/
+        v -cg test mysql_test.v
+
 #  macos:
 #    runs-on: macos-latest
 #    steps:
@@ -93,35 +96,39 @@ jobs:
 #      run: |
 #        cd ./vlib/holla/
 #        v -cg test .
-
-  windows-msvc:
-    runs-on: windows-latest
-    env:
-        VFLAGS: -cc msvc
-    steps:
-    - name: Install postgres
-      shell: bash
-      run: |
-        choco install postgresql12 --force --params '/Password:postgres'
-    - name: Install mysql
-      shell: cmd
-      run: |
-          choco install mysql
-          "C:\tools\mysql\current\bin\mysql" -e "create database holla; grant all on `holla%`.* to 'root'@'localhost';" -uroot
-    - name: Checkout V
-      uses: actions/checkout@v2
-      with:
-        repository: vlang/v
-    - name: Checkout holla
-      uses: actions/checkout@v2
-      with:
-        path: vlib/holla
-    - name: Build V
-      run: .\make.bat -msvc
-    - name: Install sqlite
-      shell: cmd
-      run: |
-        .\v.exe setup-freetype
-        .\.github\workflows\windows-install-sqlite.bat
-    - name: Build tests
-      run: .\v.exe test .\vlib\holla\.
+#
+#  windows-msvc:
+#    runs-on: windows-latest
+#    env:
+#        VFLAGS: -cc msvc
+#    steps:
+#    - name: Install postgres
+#      shell: bash
+#      run: |
+#        choco install postgresql12 --force --params '/Password:postgres'
+#    - name: Install mysql
+#      shell: cmd
+#      run: |
+#          choco install mysql
+#          "C:\tools\mysql\current\bin\mysql" -e "create database holla; grant all on `holla%`.* to 'root'@'localhost';" -uroot
+#    - name: Checkout V
+#      uses: actions/checkout@v2
+#      with:
+#        repository: vlang/v
+#    - name: Checkout holla
+#      uses: actions/checkout@v2
+#      with:
+#        path: vlib/holla
+#    - name: Build V
+#      run: .\make.bat -msvc
+#    - name: Install sqlite
+#      shell: cmd
+#      run: |
+#        .\v.exe setup-freetype
+#        choco install sqlite
+#        cd /D C:\ProgramData\chocolatey\lib\SQLite\tools
+#        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+#        lib /machine:x64 /def:sqlite3.def /out:sqlite3.lib
+#        .\.github\workflows\windows-install-sqlite.bat
+#    - name: Build tests
+#      run: .\v.exe test .\vlib\holla\.
