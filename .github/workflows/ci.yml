@@ -122,7 +122,7 @@ jobs:
   macos:
     runs-on: macos-latest
     env:
-      VFLAGS: -L/usr/local/opt/mysql-client/lib
+      LDFLAGS: -L/usr/local/opt/mysql-client/lib
     steps:
     - name: Install mysql
       run: |
