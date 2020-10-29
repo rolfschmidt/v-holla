@@ -99,15 +99,6 @@ jobs:
     env:
         VFLAGS: -cc msvc
     steps:
-    - name: Install sqlite
-      shell: cmd
-      run: |
-        choco install sqlite
-        curl -L https://www.sqlite.org/2020/sqlite-amalgamation-3320300.zip -o sqlite-amalgamation-3320300.zip
-        unzip sqlite-amalgamation-3320300.zip -d thirdparty\
-        del thirdparty\sqlite-amalgamation-3320300\shell.c
-        move /y thirdparty\sqlite-amalgamation-3320300  thirdparty\sqlite
-        dir thirdparty\sqlite
     - name: Install postgres
       shell: bash
       run: |
@@ -127,5 +118,10 @@ jobs:
         path: vlib/holla
     - name: Build V
       run: .\make.bat -msvc
+    - name: Install sqlite
+      shell: cmd
+      run: |
+        .\v.exe setup-freetype
+        .\.github\workflows\windows-install-sqlite.bat
     - name: Build tests
       run: .\v.exe test .\vlib\holla\.
