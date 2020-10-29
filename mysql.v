@@ -10,7 +10,7 @@ pub fn mysql_example() bool {
         dbname: 'holla'
     }
     mysql.connect() or {
-        return false
+        panic('driver init failed:$err')
     }
     mysql.close()
 
