@@ -103,9 +103,11 @@ jobs:
       shell: cmd
       run: |
         choco install sqlite
-        cd /D C:\ProgramData\chocolatey\lib\SQLite\tools
-        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
-        lib /machine:x64 /def:sqlite3.def /out:sqlite3.lib
+        curl -L https://www.sqlite.org/2020/sqlite-amalgamation-3320300.zip -o sqlite-amalgamation-3320300.zip
+        unzip sqlite-amalgamation-3320300.zip -d thirdparty\
+        del thirdparty\sqlite-amalgamation-3320300\shell.c
+        move /y thirdparty\sqlite-amalgamation-3320300  thirdparty\sqlite
+        dir thirdparty\sqlite
     - name: Install postgres
       shell: bash
       run: |
