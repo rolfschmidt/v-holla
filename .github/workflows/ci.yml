@@ -6,6 +6,8 @@ jobs:
   ubuntu:
     runs-on: ubuntu-20.04
     steps:
+    - name: Shutdown mysql
+      run: sudo service mysql stop
     - name: Install mysql
       uses: mirromutth/mysql-action@v1.1
       with:
