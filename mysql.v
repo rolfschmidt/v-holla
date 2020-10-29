@@ -4,7 +4,7 @@ import mysql
 
 pub fn mysql_example() bool {
     mut mysql := mysql.Connection{
-        host: 'localhost',
+        host: '127.0.0.1',
         username: 'root'
         password: 'root'
         dbname: 'holla'
