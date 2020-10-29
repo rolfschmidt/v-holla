@@ -3,93 +3,127 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  ubuntu:
-    runs-on: ubuntu-20.04
-    steps:
-    - name: Install mysql
-      run: |
-        sudo apt-get update
-        sudo apt-get -y install mysql-server libmysqlclient-dev
-        sudo /etc/init.d/mysql start
-        mysql -e "create database holla; grant all on \`holla%\`.* to 'root'@'localhost';" -uroot -proot
-    - name: Install postgres
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y libpq-dev postgresql
-        echo "host    all             all             127.0.0.1/32            md5" > sudo tee -a /etc/postgresql/10/main/pg_hba.conf
-        sudo service postgresql restart && sleep 3
-        sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'postgres';"
-        sudo -u postgres createdb holla
-        sudo service postgresql restart && sleep 3
-    - name: Install sqlite
-      run: |
-        sudo apt-get install -y libssl-dev sqlite3 libsqlite3-dev
-    - name: Checkout V
-      uses: actions/checkout@v2
-      with:
-        repository: vlang/v
-    - name: Checkout holla
-      uses: actions/checkout@v2
-      with:
-        path: vlib/holla
-    - name: Build V
-      run: |
-        make
-        sudo ./v symlink
-    - name: V Doctor
-      run: |
-        v doctor
-    - name: Build tests
-      run: |
-        cd ./vlib/holla/
-        v -cg test .
+#  ubuntu:
+#    runs-on: ubuntu-20.04
+#    steps:
+#    - name: Install mysql
+#      run: |
+#        sudo apt-get update
+#        sudo apt-get -y install mysql-server libmysqlclient-dev
+#        sudo /etc/init.d/mysql start
+#        mysql -e "create database holla; grant all on \`holla%\`.* to 'root'@'localhost';" -uroot -proot
+#    - name: Install postgres
+#      run: |
+#        sudo apt-get update
+#        sudo apt-get install -y libpq-dev postgresql
+#        echo "host    all             all             127.0.0.1/32            md5" > sudo tee -a /etc/postgresql/10/main/pg_hba.conf
+#        sudo service postgresql restart && sleep 3
+#        sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'postgres';"
+#        sudo -u postgres createdb holla
+#        sudo service postgresql restart && sleep 3
+#    - name: Install sqlite
+#      run: |
+#        sudo apt-get install -y libssl-dev sqlite3 libsqlite3-dev
+#    - name: Checkout V
+#      uses: actions/checkout@v2
+#      with:
+#        repository: vlang/v
+#    - name: Checkout holla
+#      uses: actions/checkout@v2
+#      with:
+#        path: vlib/holla
+#    - name: Build V
+#      run: |
+#        make
+#        sudo ./v symlink
+#    - name: V Doctor
+#      run: |
+#        v doctor
+#    - name: Build tests
+#      run: |
+#        cd ./vlib/holla/
+#        v -cg test .
+#
+#  macos:
+#    runs-on: macos-latest
+#    steps:
+#    - name: Install mysql
+#      run: |
+#        # brew uninstall openssl@1.0.2t
+#        # brew uninstall python@2.7.17
+#        # brew untap local/openssl
+#        # brew untap local/python2
+#        # brew cask install xquartz
+#        brew update
+#        brew install mysql
+#        brew install mysql-client
+#        brew services start mysql
+#        brew services stop mysql;sleep 3;brew services start mysql
+#        sleep 2
+#        macos_mysql_version="$(ls /usr/local/Cellar/mysql)"
+#        /usr/local/Cellar/mysql/${macos_mysql_version}/bin/mysql -e "create database holla; grant all on \`holla%\`.* to 'root'@'localhost';" -uroot
+#    - name: Install postgres
+#      run: |
+#        /usr/local/opt/postgres/bin/pg_ctl -D /usr/local/var/postgres start
+#        sleep 3
+#        /usr/local/opt/postgres/bin/createuser -s postgres
+#        /usr/local/opt/postgres/bin/createdb holla -U postgres
+#    - name: Install sqlite
+#      run: |
+#        # brew uninstall openssl@1.0.2t
+#        # brew uninstall python@2.7.17
+#        # brew untap local/openssl
+#        # brew untap local/python2
+#        # brew cask install xquartz
+#        brew update
+#        brew install sqlite
+#    - name: Checkout V
+#      uses: actions/checkout@v2
+#      with:
+#        repository: vlang/v
+#    - name: Checkout holla
+#      uses: actions/checkout@v2
+#      with:
+#        path: vlib/holla
+#    - name: Build V
+#      run: |
+#        make
+#        ./v symlink
+#    - name: Build tests
+#      run: |
+#        cd ./vlib/holla/
+#        v -cg test .
 
-  macos:
-    runs-on: macos-latest
+  windows-msvc:
+    runs-on: windows-latest
+    env:
+        VFLAGS: -cc msvc
     steps:
-    - name: Install mysql
-      run: |
-        # brew uninstall openssl@1.0.2t
-        # brew uninstall python@2.7.17
-        # brew untap local/openssl
-        # brew untap local/python2
-        # brew cask install xquartz
-        brew update
-        brew install mysql
-        brew install mysql-client
-        brew services start mysql
-        brew services stop mysql;sleep 3;brew services start mysql
-        sleep 2
-        macos_mysql_version="$(ls /usr/local/Cellar/mysql)"
-        /usr/local/Cellar/mysql/${macos_mysql_version}/bin/mysql -e "create database holla; grant all on \`holla%\`.* to 'root'@'localhost';" -uroot
-    - name: Install postgres
-      run: |
-        /usr/local/opt/postgres/bin/pg_ctl -D /usr/local/var/postgres start
-        sleep 3
-        /usr/local/opt/postgres/bin/createuser -s postgres
-        /usr/local/opt/postgres/bin/createdb holla -U postgres
     - name: Install sqlite
+      shell: cmd
       run: |
-        # brew uninstall openssl@1.0.2t
-        # brew uninstall python@2.7.17
-        # brew untap local/openssl
-        # brew untap local/python2
-        # brew cask install xquartz
-        brew update
-        brew install sqlite
+        choco install sqlite
+        cd /D C:\ProgramData\chocolatey\lib\SQLite\tools
+        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+        lib /machine:x64 /def:sqlite3.def /out:sqlite3.lib
+    - name: Install postgres
+      shell: bash
+      run: |
+        choco install postgresql12 --force --params '/Password:root'
+    - name: Install mysql
+      shell: cmd
+      run: |
+          choco install mysql
+          "C:\tools\mysql\current\bin\mysql" -e "create database holla; grant all on `holla%`.* to 'root'@'localhost';" -uroot
     - name: Checkout V
       uses: actions/checkout@v2
       with:
         repository: vlang/v
-    - name: Checkout holla
+    - name: Checkout version
       uses: actions/checkout@v2
       with:
-        path: vlib/holla
+        path: vlib/version
     - name: Build V
-      run: |
-        make
-        ./v symlink
+      run: .\make.bat -msvc
     - name: Build tests
-      run: |
-        cd ./vlib/holla/
-        v -cg test .
+      run: .\v.exe test .\vlib\holla\.
