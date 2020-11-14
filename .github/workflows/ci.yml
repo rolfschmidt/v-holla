@@ -140,6 +140,7 @@ jobs:
         sleep 2
         macos_mysql_version="$(ls /usr/local/Cellar/mysql)"
         /usr/local/Cellar/mysql/${macos_mysql_version}/bin/mysql -e "create database holla; grant all on \`holla%\`.* to 'root'@'localhost';" -uroot
+        /usr/local/Cellar/mysql/${macos_mysql_version}/bin/mysql -e "UPDATE user SET password=PASSWORD('root') WHERE User='root';" -uroot
     - name: Install postgres
       run: |
         /usr/local/opt/postgres/bin/pg_ctl -D /usr/local/var/postgres start
