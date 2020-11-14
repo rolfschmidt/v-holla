@@ -49,7 +49,7 @@ jobs:
         sudo apt-get update
         sudo apt-get -y install mysql-server libmysqlclient-dev
         sudo /etc/init.d/mysql start
-        mysql -e "CREATE DATABASE holla; CREATE USER 'holla'@'localhost' IDENTIFIED BY 'holla'; GRANT ALL PRIVILEGES ON * . * TO 'holla'@'localhost'; FLUSH PRIVILEGES;" -uroot
+        mysql -e "CREATE DATABASE holla; CREATE USER 'holla'@'localhost' IDENTIFIED BY 'holla'; GRANT ALL PRIVILEGES ON * . * TO 'holla'@'localhost'; FLUSH PRIVILEGES;" -uroot -proot
     - name: Install postgres
       run: |
         sudo apt-get update
@@ -87,7 +87,7 @@ jobs:
         sudo apt-get update
         sudo apt-get -y install mysql-server libmysqlclient-dev
         sudo /etc/init.d/mysql start
-        mysql -e "CREATE DATABASE holla; CREATE USER 'holla'@'localhost' IDENTIFIED BY 'holla'; GRANT ALL PRIVILEGES ON * . * TO 'holla'@'localhost'; FLUSH PRIVILEGES;" -uroot
+        mysql -e "CREATE DATABASE holla; CREATE USER 'holla'@'localhost' IDENTIFIED BY 'holla'; GRANT ALL PRIVILEGES ON * . * TO 'holla'@'localhost'; FLUSH PRIVILEGES;" -uroot -proot
     - name: Install postgres
       run: |
         sudo apt-get update
