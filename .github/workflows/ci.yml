@@ -3,199 +3,198 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  ubuntu-20-action:
-    runs-on: ubuntu-20.04
-    steps:
-    - name: Shutdown mysql
-      run: sudo service mysql stop
-    - name: Install mysql
-      uses: mirromutth/mysql-action@v1.1
-      with:
-        mysql user: 'holla'
-        mysql password: 'holla'
-        mysql database: 'holla'
-    - name: Install postgres
-      uses: harmon758/postgresql-action@v1
-      with:
-        postgresql version: '11'
-        postgresql db: 'holla'
-        postgresql user: 'postgres'
-        postgresql password: 'postgres'
-    - name: Install sqlite
-      run: |
-        sudo apt-get install -y libssl-dev sqlite3 libsqlite3-dev
-    - name: Checkout V
-      uses: actions/checkout@v2
-      with:
-        repository: vlang/v
-    - name: Checkout holla
-      uses: actions/checkout@v2
-      with:
-        path: vlib/holla
-    - name: Build V
-      run: |
-        make
-        sudo ./v symlink
-    - name: Build tests
-      run: |
-        cd ./vlib/holla/
-        v -cg test .
+  # ubuntu-20-action:
+  #   runs-on: ubuntu-20.04
+  #   steps:
+  #   - name: Shutdown mysql
+  #     run: sudo service mysql stop
+  #   - name: Install mysql
+  #     uses: mirromutth/mysql-action@v1.1
+  #     with:
+  #       mysql user: 'holla'
+  #       mysql password: 'holla'
+  #       mysql database: 'holla'
+  #   - name: Install postgres
+  #     uses: harmon758/postgresql-action@v1
+  #     with:
+  #       postgresql version: '11'
+  #       postgresql db: 'holla'
+  #       postgresql user: 'postgres'
+  #       postgresql password: 'postgres'
+  #   - name: Install sqlite
+  #     run: |
+  #       sudo apt-get install -y libssl-dev sqlite3 libsqlite3-dev
+  #   - name: Checkout V
+  #     uses: actions/checkout@v2
+  #     with:
+  #       repository: vlang/v
+  #   - name: Checkout holla
+  #     uses: actions/checkout@v2
+  #     with:
+  #       path: vlib/holla
+  #   - name: Build V
+  #     run: |
+  #       make
+  #       sudo ./v symlink
+  #   - name: Build tests
+  #     run: |
+  #       cd ./vlib/holla/
+  #       v -cg test .
 
-  ubuntu-20:
-    runs-on: ubuntu-20.04
-    steps:
-    - name: Install mysql
-      run: |
-        sudo apt-get update
-        sudo apt-get -y install mysql-server libmysqlclient-dev
-        sudo /etc/init.d/mysql start
-        mysql -e "CREATE DATABASE holla; CREATE USER 'holla'@'localhost' IDENTIFIED BY 'holla'; GRANT ALL PRIVILEGES ON * . * TO 'holla'@'localhost'; FLUSH PRIVILEGES;" -uroot -proot
-    - name: Install postgres
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y libpq-dev postgresql
-        echo "host    all             all             127.0.0.1/32            md5" > sudo tee -a /etc/postgresql/10/main/pg_hba.conf
-        sudo service postgresql restart && sleep 3
-        sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'postgres';"
-        sudo -u postgres createdb holla
-        sudo service postgresql restart && sleep 3
-    - name: Install sqlite
-      run: |
-        sudo apt-get install -y libssl-dev sqlite3 libsqlite3-dev
-    - name: Checkout V
-      uses: actions/checkout@v2
-      with:
-        repository: vlang/v
-    - name: Checkout holla
-      uses: actions/checkout@v2
-      with:
-        path: vlib/holla
-    - name: Build V
-      run: |
-        make
-        sudo ./v symlink
-    - name: Build tests
-      run: |
-        cd ./vlib/holla/
-        v -cg test .
+  # ubuntu-20:
+  #   runs-on: ubuntu-20.04
+  #   steps:
+  #   - name: Install mysql
+  #     run: |
+  #       sudo apt-get update
+  #       sudo apt-get -y install mysql-server libmysqlclient-dev
+  #       sudo /etc/init.d/mysql start
+  #       mysql -e "CREATE DATABASE holla; CREATE USER 'holla'@'localhost' IDENTIFIED BY 'holla'; GRANT ALL PRIVILEGES ON * . * TO 'holla'@'localhost'; FLUSH PRIVILEGES;" -uroot -proot
+  #   - name: Install postgres
+  #     run: |
+  #       sudo apt-get update
+  #       sudo apt-get install -y libpq-dev postgresql
+  #       echo "host    all             all             127.0.0.1/32            md5" > sudo tee -a /etc/postgresql/10/main/pg_hba.conf
+  #       sudo service postgresql restart && sleep 3
+  #       sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'postgres';"
+  #       sudo -u postgres createdb holla
+  #       sudo service postgresql restart && sleep 3
+  #   - name: Install sqlite
+  #     run: |
+  #       sudo apt-get install -y libssl-dev sqlite3 libsqlite3-dev
+  #   - name: Checkout V
+  #     uses: actions/checkout@v2
+  #     with:
+  #       repository: vlang/v
+  #   - name: Checkout holla
+  #     uses: actions/checkout@v2
+  #     with:
+  #       path: vlib/holla
+  #   - name: Build V
+  #     run: |
+  #       make
+  #       sudo ./v symlink
+  #   - name: Build tests
+  #     run: |
+  #       cd ./vlib/holla/
+  #       v -cg test .
 
-  ubuntu-18:
-    runs-on: ubuntu-18.04
-    steps:
-    - name: Install mysql
-      run: |
-        sudo apt-get update
-        sudo apt-get -y install mysql-server libmysqlclient-dev
-        sudo /etc/init.d/mysql start
-        mysql -e "CREATE DATABASE holla; CREATE USER 'holla'@'localhost' IDENTIFIED BY 'holla'; GRANT ALL PRIVILEGES ON * . * TO 'holla'@'localhost'; FLUSH PRIVILEGES;" -uroot -proot
-    - name: Install postgres
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y libpq-dev postgresql
-        echo "host    all             all             127.0.0.1/32            md5" > sudo tee -a /etc/postgresql/10/main/pg_hba.conf
-        sudo service postgresql restart && sleep 3
-        sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'postgres';"
-        sudo -u postgres createdb holla
-        sudo service postgresql restart && sleep 3
-    - name: Install sqlite
-      run: |
-        sudo rm -f /etc/apt/sources.list.d/dotnetdev.list /etc/apt/sources.list.d/microsoft-prod.list;
-        sudo apt-get update;
-        sudo apt-get install --quiet -y postgresql libpq-dev libssl-dev sqlite3 libsqlite3-dev valgrind
-        sudo apt-get install --quiet -y libglfw3 libglfw3-dev  libfreetype6-dev  libxi-dev libxcursor-dev libasound2-dev
-    - name: Checkout V
-      uses: actions/checkout@v2
-      with:
-        repository: vlang/v
-    - name: Checkout holla
-      uses: actions/checkout@v2
-      with:
-        path: vlib/holla
-    - name: Build V
-      run: |
-        make
-        sudo ./v symlink
-    - name: Build tests
-      run: |
-        cd ./vlib/holla/
-        v -cg test .
+  # ubuntu-18:
+  #   runs-on: ubuntu-18.04
+  #   steps:
+  #   - name: Install mysql
+  #     run: |
+  #       sudo apt-get update
+  #       sudo apt-get -y install mysql-server libmysqlclient-dev
+  #       sudo /etc/init.d/mysql start
+  #       mysql -e "CREATE DATABASE holla; CREATE USER 'holla'@'localhost' IDENTIFIED BY 'holla'; GRANT ALL PRIVILEGES ON * . * TO 'holla'@'localhost'; FLUSH PRIVILEGES;" -uroot -proot
+  #   - name: Install postgres
+  #     run: |
+  #       sudo apt-get update
+  #       sudo apt-get install -y libpq-dev postgresql
+  #       echo "host    all             all             127.0.0.1/32            md5" > sudo tee -a /etc/postgresql/10/main/pg_hba.conf
+  #       sudo service postgresql restart && sleep 3
+  #       sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'postgres';"
+  #       sudo -u postgres createdb holla
+  #       sudo service postgresql restart && sleep 3
+  #   - name: Install sqlite
+  #     run: |
+  #       sudo rm -f /etc/apt/sources.list.d/dotnetdev.list /etc/apt/sources.list.d/microsoft-prod.list;
+  #       sudo apt-get update;
+  #       sudo apt-get install --quiet -y postgresql libpq-dev libssl-dev sqlite3 libsqlite3-dev valgrind
+  #       sudo apt-get install --quiet -y libglfw3 libglfw3-dev  libfreetype6-dev  libxi-dev libxcursor-dev libasound2-dev
+  #   - name: Checkout V
+  #     uses: actions/checkout@v2
+  #     with:
+  #       repository: vlang/v
+  #   - name: Checkout holla
+  #     uses: actions/checkout@v2
+  #     with:
+  #       path: vlib/holla
+  #   - name: Build V
+  #     run: |
+  #       make
+  #       sudo ./v symlink
+  #   - name: Build tests
+  #     run: |
+  #       cd ./vlib/holla/
+  #       v -cg test .
 
-  macos:
-    runs-on: macos-latest
-    env:
-      LDFLAGS: -L/usr/local/opt/mysql-client/lib
-      CFLAGS: -I/usr/local/opt/mysql-client/include
-    steps:
-    - name: Install mysql
-      run: |
-        # brew uninstall openssl@1.0.2t
-        # brew uninstall python@2.7.17
-        # brew untap local/openssl
-        # brew untap local/python2
-        # brew cask install xquartz
-        brew update
-        brew install mysql
-        brew install mysql-client
-        brew services start mysql
-        brew services stop mysql;sleep 3;brew services start mysql
-        sleep 2
-        macos_mysql_version="$(ls /usr/local/Cellar/mysql)"
-        /usr/local/Cellar/mysql/${macos_mysql_version}/bin/mysql -e "CREATE DATABASE holla; CREATE USER 'holla'@'localhost' IDENTIFIED BY 'holla'; GRANT ALL PRIVILEGES ON * . * TO 'holla'@'localhost'; FLUSH PRIVILEGES;" -uroot
-    - name: Install postgres
-      run: |
-        /usr/local/opt/postgres/bin/pg_ctl -D /usr/local/var/postgres start
-        sleep 3
-        /usr/local/opt/postgres/bin/createuser -s postgres
-        /usr/local/opt/postgres/bin/createdb holla -U postgres
-    - name: Install sqlite
-      run: |
-        # brew uninstall openssl@1.0.2t
-        # brew uninstall python@2.7.17
-        # brew untap local/openssl
-        # brew untap local/python2
-        # brew cask install xquartz
-        brew update
-        brew install sqlite
-    - name: Checkout V
-      uses: actions/checkout@v2
-      with:
-        repository: vlang/v
-    - name: Checkout holla
-      uses: actions/checkout@v2
-      with:
-        path: vlib/holla
-    - name: Build V
-      run: |
-        make
-        ./v symlink
-    - name: Build tests
-      run: |
-        cd ./vlib/holla/
-        v -cg test .
+  # macos:
+  #   runs-on: macos-latest
+  #   env:
+  #     LDFLAGS: -L/usr/local/opt/mysql-client/lib
+  #     CFLAGS: -I/usr/local/opt/mysql-client/include
+  #   steps:
+  #   - name: Install mysql
+  #     run: |
+  #       # brew uninstall openssl@1.0.2t
+  #       # brew uninstall python@2.7.17
+  #       # brew untap local/openssl
+  #       # brew untap local/python2
+  #       # brew cask install xquartz
+  #       brew update
+  #       brew install mysql
+  #       brew install mysql-client
+  #       brew services start mysql
+  #       brew services stop mysql;sleep 3;brew services start mysql
+  #       sleep 2
+  #       macos_mysql_version="$(ls /usr/local/Cellar/mysql)"
+  #       /usr/local/Cellar/mysql/${macos_mysql_version}/bin/mysql -e "CREATE DATABASE holla; CREATE USER 'holla'@'localhost' IDENTIFIED BY 'holla'; GRANT ALL PRIVILEGES ON * . * TO 'holla'@'localhost'; FLUSH PRIVILEGES;" -uroot
+  #   - name: Install postgres
+  #     run: |
+  #       /usr/local/opt/postgres/bin/pg_ctl -D /usr/local/var/postgres start
+  #       sleep 3
+  #       /usr/local/opt/postgres/bin/createuser -s postgres
+  #       /usr/local/opt/postgres/bin/createdb holla -U postgres
+  #   - name: Install sqlite
+  #     run: |
+  #       # brew uninstall openssl@1.0.2t
+  #       # brew uninstall python@2.7.17
+  #       # brew untap local/openssl
+  #       # brew untap local/python2
+  #       # brew cask install xquartz
+  #       brew update
+  #       brew install sqlite
+  #   - name: Checkout V
+  #     uses: actions/checkout@v2
+  #     with:
+  #       repository: vlang/v
+  #   - name: Checkout holla
+  #     uses: actions/checkout@v2
+  #     with:
+  #       path: vlib/holla
+  #   - name: Build V
+  #     run: |
+  #       make
+  #       ./v symlink
+  #   - name: Build tests
+  #     run: |
+  #       cd ./vlib/holla/
+  #       v -cg test .
 
   windows-msvc:
     runs-on: windows-latest
     env:
       VFLAGS: -cc msvc
-      LDFLAGS: -LC:\tools\mysql\current\lib
-      CFLAGS: -IC:\tools\mysql\current\include
+      CFLAGS: -IC:\tools\mysql\current\include -LC:\tools\mysql\current\lib
     steps:
-    - name: Install postgres
-      shell: bash
-      run: |
-        choco install postgresql12 --force --params '/Password:postgres'
+    # - name: Install postgres
+    #   shell: bash
+    #   run: |
+    #     choco install postgresql12 --force --params '/Password:postgres'
     - name: Install mysql
       shell: cmd
       run: |
           choco install mysql
           "C:\tools\mysql\current\bin\mysql" -e "CREATE DATABASE holla; CREATE USER 'holla'@'localhost' IDENTIFIED BY 'holla'; GRANT ALL PRIVILEGES ON * . * TO 'holla'@'localhost'; FLUSH PRIVILEGES;" -uroot
-    - name: Install sqlite
-      shell: cmd
-      run: |
-        choco install sqlite
-        cd /D C:\ProgramData\chocolatey\lib\SQLite\tools
-        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
-        lib /machine:x64 /def:sqlite3.def /out:sqlite3.lib
+    # - name: Install sqlite
+    #   shell: cmd
+    #   run: |
+    #     choco install sqlite
+    #     cd /D C:\ProgramData\chocolatey\lib\SQLite\tools
+    #     call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+    #     lib /machine:x64 /def:sqlite3.def /out:sqlite3.lib
     - name: Checkout V
       uses: actions/checkout@v2
       with:
