@@ -175,8 +175,6 @@ jobs:
 
   windows-msvc:
     runs-on: windows-latest
-    env:
-      VFLAGS: -cc msvc
     steps:
     - name: Checkout V
       uses: actions/checkout@v2
@@ -206,11 +204,11 @@ jobs:
     #     call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
     #     lib /machine:x64 /def:sqlite3.def /out:sqlite3.lib
     - name: Build V
-      run: .\make.bat -msvc
-    - name: Install sqlite
-      shell: cmd
-      run: |
-        .\v.exe setup-freetype
-        .\.github\workflows\windows-install-sqlite.bat
+      run: .\make.bat
+    # - name: Install sqlite
+    #   shell: cmd
+    #   run: |
+    #     .\v.exe setup-freetype
+    #     .\.github\workflows\windows-install-sqlite.bat
     - name: Build tests
       run: .\v.exe test .\vlib\holla\.
