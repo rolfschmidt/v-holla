@@ -188,14 +188,17 @@ jobs:
       shell: bash
       run: |
         choco install postgresql12 --force --params '/Password:postgres'
+        Xcopy /E /I C:\Program Files\PostgreSQL\12\include thirdparty\pg\include
+        Xcopy /E /I C:\Program Files\PostgreSQL\12\lib thirdparty\pg\win64
+        echo "C:\Program Files\PostgreSQL\12\lib" >> $GITHUB_PATH
     - name: Install mysql
       shell: cmd
       run: |
-          choco install mysql
-          "C:\tools\mysql\current\bin\mysql" -e "CREATE DATABASE holla; CREATE USER 'holla'@'localhost' IDENTIFIED BY 'holla'; GRANT ALL PRIVILEGES ON * . * TO 'holla'@'localhost'; FLUSH PRIVILEGES;" -uroot
-          Xcopy /E /I C:\tools\mysql\current\include thirdparty\mysql\include
-          Xcopy /E /I C:\tools\mysql\current\lib thirdparty\mysql\lib
-          copy C:\tools\mysql\current\lib\libmysql.dll .
+        choco install mysql
+        "C:\tools\mysql\current\bin\mysql" -e "CREATE DATABASE holla; CREATE USER 'holla'@'localhost' IDENTIFIED BY 'holla'; GRANT ALL PRIVILEGES ON * . * TO 'holla'@'localhost'; FLUSH PRIVILEGES;" -uroot
+        Xcopy /E /I C:\tools\mysql\current\include thirdparty\mysql\include
+        Xcopy /E /I C:\tools\mysql\current\lib thirdparty\mysql\lib
+        echo "C:\tools\mysql\current\lib" >> $GITHUB_PATH
     # - name: Install sqlite
     #   shell: cmd
     #   run: |
