@@ -195,7 +195,7 @@ jobs:
           "C:\tools\mysql\current\bin\mysql" -e "CREATE DATABASE holla; CREATE USER 'holla'@'localhost' IDENTIFIED BY 'holla'; GRANT ALL PRIVILEGES ON * . * TO 'holla'@'localhost'; FLUSH PRIVILEGES;" -uroot
           Xcopy /E /I C:\tools\mysql\current\include thirdparty\mysql\include
           Xcopy /E /I C:\tools\mysql\current\lib thirdparty\mysql\lib
-          set PATH=%PATH%;C:\tools\mysql\current\lib\
+          copy C:\tools\mysql\current\lib\libmysql.dll .
     # - name: Install sqlite
     #   shell: cmd
     #   run: |
