@@ -176,8 +176,16 @@ jobs:
   windows-msvc:
     runs-on: windows-latest
     env:
-      VFLAGS: -cc msvc -cflags "-IC:/tools/mysql/current/include C:/tools/mysql/current/lib/libmysql.dll"
+      VFLAGS: -cc msvc
     steps:
+    - name: Checkout V
+      uses: actions/checkout@v2
+      with:
+        repository: vlang/v
+    - name: Checkout holla
+      uses: actions/checkout@v2
+      with:
+        path: vlib/holla
     # - name: Install postgres
     #   shell: bash
     #   run: |
@@ -187,6 +195,8 @@ jobs:
       run: |
           choco install mysql
           "C:\tools\mysql\current\bin\mysql" -e "CREATE DATABASE holla; CREATE USER 'holla'@'localhost' IDENTIFIED BY 'holla'; GRANT ALL PRIVILEGES ON * . * TO 'holla'@'localhost'; FLUSH PRIVILEGES;" -uroot
+          Xcopy /E /I C:\tools\mysql\current\include thirdparty\mysql\include
+          Xcopy /E /I C:\tools\mysql\current\lib thirdparty\mysql\lib
     # - name: Install sqlite
     #   shell: cmd
     #   run: |
@@ -194,14 +204,6 @@ jobs:
     #     cd /D C:\ProgramData\chocolatey\lib\SQLite\tools
     #     call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
     #     lib /machine:x64 /def:sqlite3.def /out:sqlite3.lib
-    - name: Checkout V
-      uses: actions/checkout@v2
-      with:
-        repository: vlang/v
-    - name: Checkout holla
-      uses: actions/checkout@v2
-      with:
-        path: vlib/holla
     - name: Build V
       run: .\make.bat -msvc
     - name: Install sqlite
