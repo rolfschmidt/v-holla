@@ -176,8 +176,7 @@ jobs:
   windows-msvc:
     runs-on: windows-latest
     env:
-      VFLAGS: -cc msvc
-      CFLAGS: -IC:\tools\mysql\current\include -LC:\tools\mysql\current\lib
+      VFLAGS: -cc msvc -cflags "-IC:/tools/mysql/current/include C:/tools/mysql/current/lib/libmysql.dll"
     steps:
     # - name: Install postgres
     #   shell: bash
