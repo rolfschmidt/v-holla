@@ -188,8 +188,8 @@ jobs:
       shell: bash
       run: |
         choco install postgresql12 --force --params '/Password:postgres'
-        Xcopy /E /I C:\Program Files\PostgreSQL\12\include thirdparty\pg\include
-        Xcopy /E /I C:\Program Files\PostgreSQL\12\lib thirdparty\pg\win64
+        Xcopy /E /I "C:\Program Files\PostgreSQL\12\include" thirdparty\pg\include
+        Xcopy /E /I "C:\Program Files\PostgreSQL\12\lib" thirdparty\pg\win64
         echo "C:\Program Files\PostgreSQL\12\lib" >> $GITHUB_PATH
     - name: Install mysql
       shell: cmd
